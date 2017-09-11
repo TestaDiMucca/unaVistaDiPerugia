@@ -12,3 +12,8 @@ Trying to implement a simple image viewer with React and File API
 ## Longer Term Goals ##
 - [ ] Comment markup
 - [ ] Exports to JSON object
+
+
+Sample Repos
+https://github.com/ModusCreateOrg/budgeting-sample-app.git
+https://github.com/tightenco/react-gif-search-engine.git
