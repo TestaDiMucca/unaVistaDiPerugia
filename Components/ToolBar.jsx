@@ -16,10 +16,17 @@ var ToolBar = (props) => {
     return result;
   };
 
+  var handleChangeL = function() {
+    props.changePic('L');
+  }
+  var handleChangeR = function() {
+    props.changePic('R');    
+  }
+
   return (
     <div className={findToggle()}>
-      <button id="leftRight">&#8592;</button>
-      <button id="rightButton">&#8594;</button>
+      <button id="leftRight" onClick={handleChangeL}>&#8592;</button>
+      <button id="rightButton" onClick={handleChangeR}>&#8594;</button>
       <span>&nbsp;&nbsp;&nbsp;Load Files:</span>
       <input type="file" id="files" name="fileArray[]" multiple onChange={handleFileSelect}/>
       <div className="backingBox"></div>

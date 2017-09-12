@@ -2,21 +2,33 @@ var Viewer = (props) => {
 
   var getSource = function() {
     var image = props.image;
-    var imgPath;
+    var imgSrc = 'default';
+    var span = document.createElement('span');
     if (image === undefined) {
-      imgPath = "Components/Viewer.jpg";
+      imgSrc = "Components/Viewer.jpg";
+      return imgSrc;
     } else {
-      var reader = new FileReader();
+      if (props.image.type.match('image.*')) {
+
+
+        var reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+          var fileDisplayArea = document.getElementById('selectedFile');
+          fileDisplayArea.src = reader.result;
+        }, false);
+
+        reader.readAsDataURL(props.image);
+      } else {
+        alert('Non-image or unsupported image file loaded!');
+      }
+
     }
-    // return {backgroundImage: `url("${imgPath}")`};
-    // return {backgroundImage: `url("${imgPath}")`, backgroundSize: 'auto 100%',
-    // height: '100%', position: 'absolute', width: '100%', };
-    return imgPath;
   }
 
 
   return (
-    <div className="boxView"><img src={getSource()}></img></div>
+    <div className="boxView"><img id="selectedFile" src={getSource()}></img></div>
   );
 };
 

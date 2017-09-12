@@ -4,6 +4,7 @@ h1 {
 
 body {
   background-color: black;
+  overflow: hidden;
 }
 
 div, span {
@@ -40,7 +41,7 @@ div {
 
 .hiddenToolbar {
   transition: opacity 1s;
-  opacity: 0.05;
+  opacity: 0;
 }
 
 .showToolbar {
