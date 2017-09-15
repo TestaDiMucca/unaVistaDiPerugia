@@ -35,14 +35,38 @@ class App extends React.Component {
         }
       }
     }, 1000);
+
     document.addEventListener("keydown", this.handleKeyboard.bind(this));
+
+    var viewerBox = document.getElementById('displayBox');
+    viewerBox.addEventListener('dragover', this.handleDragOver, false);
+    viewerBox.addEventListener('drop', this.handleDrop.bind(this), false);
   }
 
+  //Handlers, callbacks vvv
+
   loadLibrary (newData) {
+    // console.log(newData);
     this.setState({library: newData});
     this.setState({totalLoaded: newData.length});
     this.setState({selected: 0});
     // console.log('selected', this.state.selected, 'in library', this.state.library);
+  }
+
+  handleDrop (event) {
+    // console.log('drop');
+    event.stopPropagation();
+    event.preventDefault();
+    var fileArray = event.dataTransfer.files;
+
+    this.loadLibrary(fileArray);
+  }
+
+  handleDragOver (event) {
+    // console.log('dragover');
+    event.stopPropagation();
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
   }
 
   changeSelected (direction) {
@@ -110,7 +134,7 @@ class App extends React.Component {
         <div id="displayBox"><Viewer image={this.state.library[this.state.selected]} /></div>
         <div id="toolBar"><ToolBar hide={this.state.hideToolbar} cb={this.loadLibrary.bind(this)}
             changePic={this.changeSelected.bind(this)} getInfo={this.getInfo.bind(this)}
-            changeSlideshowState={this.adjustSlideshowState.bind(this)}/></div>
+            changeSlideshowState={this.adjustSlideshowState.bind(this)} playing={this.state.slideshowRunning}/></div>
       </div>
     );
   }
