@@ -1,11 +1,23 @@
-# ImageView
-Trying to implement a simple image viewer with React and File API
+# Perugia View
 
-- - - -
+Reviving the React-ImageView to experiment with packaging with the following goals:
+- File system integration
+- Working with menus and "native" bits
+- Packaging
+- A tool for family to use that doesn't blow up every 5 images
 
-## Long Term Goals ##
-- [x] Load images from file input
-- [x] Scroll through images
-- [x] Customizable slideshow
-- [x] Display file name overlay/bar
-- [ ] Drag files into viewing area loads them
+## Setup + Build
+
+Local development:
+
+```bash
+cd perugia-view
+npm i
+npm run dev
+```
+
+Will build with vite and with tauri:
+
+```bash
+npm run test-build
+```
