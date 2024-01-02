@@ -1,12 +1,13 @@
 import DefaultDropzone from 'react-dropzone';
 import { Box, BoxProps } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import useUIStateContext from 'src/hooks/useUiStateContext';
+import { ACCEPTED_TYPES } from 'src/utils/files.helpers';
 
-type Props = {
+type Props = Omit<BoxProps, 'onDrop'> & {
   onDrop: (acceptedFiles: File[]) => void;
   children?: React.ReactNode;
-} & BoxProps;
+};
 
 export default function Dropzone({ onDrop, children, ...boxProps }: Props) {
   const { setAlert } = useUIStateContext();
@@ -22,11 +23,30 @@ export default function Dropzone({ onDrop, children, ...boxProps }: Props) {
 
   const hideInstruction = useCallback(() => setAlert(null), [setAlert]);
 
+  const handleDrop = useCallback(
+    (files: File[]) => {
+      onDrop(files);
+      hideInstruction();
+    },
+    [onDrop]
+  );
+
+  const acceptedFormats = useMemo(() => {
+    const res: Record<string, string[]> = {};
+
+    ACCEPTED_TYPES.forEach((type) => {
+      res[type] = [];
+    });
+
+    return res;
+  }, []);
+
   return (
     <DefaultDropzone
-      onDrop={onDrop}
+      onDrop={handleDrop}
       onDragEnter={showInstructions}
       onDragLeave={hideInstruction}
+      accept={acceptedFormats}
     >
       {({ getRootProps, getInputProps }) => (
         <Box

@@ -1,4 +1,5 @@
 import { extendTheme, ComponentStyleConfig } from '@chakra-ui/react';
+import { COLORS } from './constants';
 
 const VStack: ComponentStyleConfig = {
   baseStyle: {
@@ -15,7 +16,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        background: '#161414',
+        background: COLORS.darkGray,
         height: 'full',
         width: 'full',
         userSelect: 'none',

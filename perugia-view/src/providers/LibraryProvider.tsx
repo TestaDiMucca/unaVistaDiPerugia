@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 interface LibraryContextValues {
-  library: File[];
-  setLibrary: (_: File[]) => void;
+  library: EnrichedFile[];
+  setLibrary: (_: EnrichedFile[]) => void;
   renderKey: number;
 }
 
@@ -17,10 +17,10 @@ interface ProviderProps {}
 const LibraryProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   children,
 }) => {
-  const [library, setLibrary] = useState<File[]>([]);
+  const [library, setLibrary] = useState<EnrichedFile[]>([]);
   const [renderKey, setRenderKey] = useState(0);
 
-  const handleSetLibrary = useCallback((lib: File[]) => {
+  const handleSetLibrary = useCallback((lib: EnrichedFile[]) => {
     setLibrary(lib);
   }, []);
 
