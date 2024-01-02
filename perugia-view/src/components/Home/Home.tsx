@@ -40,7 +40,7 @@ export default function Home() {
         padding="10"
         borderRadius="4"
         border="1px solid"
-        borderColor="gray.700"
+        borderColor="orange.500"
         w="sm"
         h="md"
       >
