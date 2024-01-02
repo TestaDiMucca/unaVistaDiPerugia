@@ -26,8 +26,6 @@ export default function Slide({ file, focused }: Props) {
 
   const clearObjectUrl = useCallback(() => {
     if (!url.current) return;
-
-    console.log('revoke');
     URL.revokeObjectURL(url.current);
   }, [url.current]);
 
@@ -36,8 +34,16 @@ export default function Slide({ file, focused }: Props) {
   }, []);
 
   return (
-    <SlideFade in={focused} offsetX="20px">
+    <SlideFade
+      in={focused}
+      offsetY="20px"
+      transition={{ exit: { duration: 0.5 }, enter: { duration: 0.5 } }}
+    >
       <Box
+        position={focused ? undefined : 'absolute'}
+        opacity={focused ? 1 : 0}
+        transitionProperty="opacity"
+        transitionDuration="0.5s"
         w="full"
         h="full"
         style={{

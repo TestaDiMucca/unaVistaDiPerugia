@@ -10,7 +10,7 @@ import Show from './components/Show/Show';
 function App() {
   const { view } = useUIStateContext();
   return (
-    <Box h="full" w="full" display="flex">
+    <Box h="full" w="full" display="flex" overflow="hidden">
       {view === Views.home ? <Home /> : <Show />}
       <Notice />
     </Box>
