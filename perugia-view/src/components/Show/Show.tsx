@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, useToast } from '@chakra-ui/react';
+import { Box, useEventListener, useToast } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 
+import 'src/utils/Driver';
 import useLibraryContext from 'src/hooks/useLibraryContext';
 import Slide from './Slide';
 import ControlBar from './ControlBar';
-import eventBus, { DriverEventEnum } from 'src/utils/eventBus';
+import eventBus, {
+  DriverActionEnum,
+  DriverEventEnum,
+} from 'src/utils/eventBus';
 import useToggleState from 'src/hooks/useToggleState';
 
 const CACHE_AMOUNT = 2;
@@ -38,12 +42,13 @@ export default function Show() {
       if (targetCursor < 0 || targetCursor >= library.length) {
         toast.closeAll();
         toast({ title: 'No more!' });
+        if (toggleStates.playing.isOn) handleTogglePlayState(false);
         return;
       }
 
       setCursor(targetCursor);
     },
-    [cursor, library]
+    [cursor, library, toggleStates.playing.isOn]
   );
 
   const onNavigate = useCallback(
@@ -51,11 +56,32 @@ export default function Show() {
     [navigate]
   );
 
-  const handleTogglePlayState = useCallback(() => {
-    const newState = !toggleStates.playing.isOn;
-    newState ? toggleStates.playing.on() : toggleStates.playing.off();
-    eventBus.next({ type: DriverEventEnum.playStateChange, state: newState });
-  }, [toggleStates.playing.isOn]);
+  useEffect(() => {
+    const sub = eventBus.subscribe((e) => {
+      switch (e.type) {
+        case DriverActionEnum.advanceSlide:
+          navigate(e.step);
+          break;
+        default:
+      }
+    });
+
+    return () => sub.unsubscribe();
+  }, [navigate]);
+
+  const handleTogglePlayState = useCallback(
+    (newState: boolean) => {
+      if (newState === toggleStates.playing.isOn) return;
+
+      if (newState) {
+        toggleStates.playing.on();
+      } else {
+        toggleStates.playing.off();
+      }
+      eventBus.next({ type: DriverEventEnum.playStateChange, state: newState });
+    },
+    [toggleStates.playing.isOn]
+  );
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -67,19 +93,15 @@ export default function Show() {
           navigate(1);
           break;
         case ' ':
-          handleTogglePlayState();
+          handleTogglePlayState(!toggleStates.playing.isOn);
           break;
         default:
       }
     },
-    [navigate, handleTogglePlayState]
+    [navigate, toggleStates.playing.isOn]
   );
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [navigate]);
+  useEventListener('keydown', handleKeyDown);
 
   const handleMouseMove = useCallback(
     throttle(() => {
@@ -116,6 +138,8 @@ export default function Show() {
         onForward={onNavigate(1)}
         onBack={onNavigate(-1)}
         isVisible={showControls}
+        onTogglePlay={handleTogglePlayState}
+        playing={toggleStates.playing.isOn}
       />
     </Box>
   );

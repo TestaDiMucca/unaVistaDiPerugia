@@ -1,4 +1,4 @@
-import { Box, Image, SlideFade } from '@chakra-ui/react';
+import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import BrokenImageIcon from '@mui/icons-material/BrokenImage';
@@ -63,15 +63,17 @@ export default function Slide({ file, focused }: Props) {
           />
         ) : (
           <Box
-            w="xs"
-            h="xs"
+            w="full"
+            h="100vh"
             color="gray.300"
             display="flex"
             justifyContent="center"
             alignItems="center"
             background={COLORS.darkGray}
+            scale="1.3"
           >
             <BrokenImageIcon />
+            <Text ml="2">{file.file.name}</Text>
           </Box>
         )}
       </Box>

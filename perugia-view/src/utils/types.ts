@@ -4,3 +4,5 @@ type EnrichedFile = {
   mediaType: string;
   focused?: boolean;
 };
+
+type AnyFnc = (...args: any[]) => void;

@@ -1,4 +1,8 @@
-import eventBus, { DriverAction } from './eventBus';
+import eventBus, {
+  DriverAction,
+  DriverActionEnum,
+  DriverEventEnum,
+} from './eventBus';
 
 /**
  * Using event based system to decouple driving the slides
@@ -6,10 +10,68 @@ import eventBus, { DriverAction } from './eventBus';
  *   and settings access
  */
 class Driver {
-  constructor() {}
+  private timer: NodeJS.Timeout | null = null;
+  private advanceInterval = 4000;
+  running = false;
+  private paused = false;
 
-  private emitEvent(ev: DriverAction) {
+  constructor() {
+    this.addEventListeners();
+  }
+
+  private emitEvent = (ev: DriverAction) => {
     eventBus.next(ev);
+  };
+
+  private advance = () => {
+    if (this.paused) return;
+
+    this.emitEvent({
+      type: DriverActionEnum.advanceSlide,
+      step: 1,
+    });
+  };
+
+  public start = (interval?: number) => {
+    if (interval) this.advanceInterval = interval;
+    this.running = true;
+
+    this.timer = setInterval(this.advance, this.advanceInterval);
+  };
+
+  public stop = () => {
+    if (this.timer) clearInterval(this.timer);
+    this.running = false;
+  };
+
+  public pause = () => {
+    this.paused = true;
+  };
+
+  public unpause = () => {
+    this.paused = false;
+    if (this.running) {
+      /* Refresh timer */
+      this.stop();
+      this.start();
+    }
+  };
+
+  private addEventListeners() {
+    eventBus.subscribe((e) => {
+      console.log(e);
+      switch (e.type) {
+        case DriverEventEnum.playStateChange:
+          if (e.state) this.start();
+          else this.stop();
+          break;
+        case DriverEventEnum.blockingStateChange:
+          if (e.state) this.unpause();
+          else this.pause();
+          break;
+        default:
+      }
+    });
   }
 }
 
