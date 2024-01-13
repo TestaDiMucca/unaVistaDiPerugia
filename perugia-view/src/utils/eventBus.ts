@@ -7,6 +7,8 @@ export default eventBus;
 export enum DriverEventEnum {
   playStateChange = 'PlayStateChange',
   blockingStateChange = 'BlockingStateChange',
+  /** Reset timer if manually advanced or whatnot */
+  manualAction = 'manualAction',
 }
 
 export enum DriverActionEnum {
@@ -26,4 +28,8 @@ export type DriverEvent =
   | {
       type: DriverEventEnum.blockingStateChange;
       state: boolean;
+      advance?: boolean;
+    }
+  | {
+      type: DriverEventEnum.manualAction;
     };

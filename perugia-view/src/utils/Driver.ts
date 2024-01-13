@@ -49,12 +49,17 @@ class Driver {
   };
 
   public unpause = () => {
+    if (this.paused) return;
+
     this.paused = false;
-    if (this.running) {
-      /* Refresh timer */
-      this.stop();
-      this.start();
-    }
+    this.refresh();
+  };
+
+  private refresh = () => {
+    if (!this.running) return;
+
+    this.stop();
+    this.start();
   };
 
   private addEventListeners() {
@@ -66,8 +71,13 @@ class Driver {
           else this.stop();
           break;
         case DriverEventEnum.blockingStateChange:
-          if (e.state) this.unpause();
-          else this.pause();
+          if (e.state) {
+            this.unpause();
+            if (e.advance) this.advance();
+          } else this.pause();
+          break;
+        case DriverEventEnum.manualAction:
+          this.refresh();
           break;
         default:
       }
