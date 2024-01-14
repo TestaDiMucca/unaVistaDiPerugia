@@ -1,30 +1,48 @@
 import { Box, IconButton, Slide } from '@chakra-ui/react';
 import PlayIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import ForwardIcon from '@mui/icons-material/ArrowForward';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import FirstIcon from '@mui/icons-material/FirstPage';
+import FolderIcon from '@mui/icons-material/Folder';
 
 import Dock from '../common/Dock';
-import { COLORS } from 'src/utils/constants';
+import { COLORS, Views } from 'src/utils/constants';
 import { useCallback } from 'react';
+import useUIStateContext from 'src/hooks/useUiStateContext';
 
 type Props = {
   isVisible: boolean;
   playing: boolean;
   onForward: () => void;
   onBack: () => void;
+  navigateTo: (cursor: number) => void;
   onTogglePlay: (s: boolean) => void;
 };
 
 export default function ControlBar({
   isVisible,
   playing,
+  onBack,
+  onForward,
+  navigateTo,
   onTogglePlay,
 }: Props) {
+  const { setView } = useUIStateContext();
   const handlePlayStateChange = useCallback(
     (s: boolean) => () => {
       onTogglePlay(s);
     },
     [onTogglePlay]
   );
+
+  const handleBackToLoad = useCallback(() => {
+    setView(Views.home);
+  }, []);
+
+  const onRewind = useCallback(() => {
+    navigateTo(0);
+  }, [navigateTo]);
 
   return (
     <Dock>
@@ -54,6 +72,22 @@ export default function ControlBar({
               icon={<PlayIcon />}
             />
           )}
+          <IconButton
+            onClick={onForward}
+            aria-label="forward"
+            icon={<ForwardIcon />}
+          />
+          <IconButton onClick={onBack} aria-label="back" icon={<BackIcon />} />
+          <IconButton
+            onClick={onRewind}
+            aria-label="forward"
+            icon={<FirstIcon />}
+          />
+          <IconButton
+            onClick={handleBackToLoad}
+            aria-label="forward"
+            icon={<FolderIcon />}
+          />
         </Box>
       </Slide>
     </Dock>

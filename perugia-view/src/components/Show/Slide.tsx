@@ -5,6 +5,7 @@ import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 
 import SVGSpinner from '../common/SVGSpinner';
 import { COLORS } from 'src/utils/constants';
+import Video from '../common/Video';
 
 type Props = {
   file: EnrichedFile;
@@ -53,14 +54,18 @@ export default function Slide({ file, focused }: Props) {
         }}
       >
         {url.current ? (
-          <Image
-            w="100vw"
-            h="100vh"
-            objectFit="contain"
-            src={url.current}
-            onLoad={clearObjectUrl}
-            onError={handleError}
-          />
+          file.mediaType === 'video' ? (
+            <Video src={url.current} autoPlay />
+          ) : (
+            <Image
+              w="100vw"
+              h="100vh"
+              objectFit="contain"
+              src={url.current}
+              onLoad={clearObjectUrl}
+              onError={handleError}
+            />
+          )
         ) : (
           <Box
             w="full"

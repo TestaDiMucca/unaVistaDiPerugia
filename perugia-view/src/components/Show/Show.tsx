@@ -51,6 +51,10 @@ export default function Show() {
     [cursor, library, toggleStates.playing.isOn]
   );
 
+  const onNavigateTo = useCallback((cursor: number) => {
+    setCursor(cursor);
+  }, []);
+
   const onNavigate = useCallback(
     (step: number) => () => navigate(step),
     [navigate]
@@ -121,6 +125,7 @@ export default function Show() {
     <Box
       w="full"
       h="full"
+      overflow="hidden"
       display="grid"
       onMouseMove={handleMouseMove}
       cursor={showControls ? undefined : 'none'}
@@ -138,6 +143,7 @@ export default function Show() {
         onForward={onNavigate(1)}
         onBack={onNavigate(-1)}
         isVisible={showControls}
+        navigateTo={onNavigateTo}
         onTogglePlay={handleTogglePlayState}
         playing={toggleStates.playing.isOn}
       />
