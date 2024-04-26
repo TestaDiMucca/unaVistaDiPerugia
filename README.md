@@ -22,7 +22,3 @@ Will build with vite and with tauri:
 ```bash
 npm run test-build
 ```
-
-## Legacy project
-
-Legacy project from included in the `legacy` folder. Will probably deprecate and delete but for now it's funny to laugh at.
