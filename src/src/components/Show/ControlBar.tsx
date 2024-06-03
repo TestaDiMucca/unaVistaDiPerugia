@@ -7,6 +7,7 @@ import FirstIcon from '@mui/icons-material/FirstPage';
 import FolderIcon from '@mui/icons-material/Folder';
 
 import Dock from '../common/Dock';
+import Tooltip from '../common/Tooltip';
 import { COLORS, Views } from 'src/utils/constants';
 import { useCallback } from 'react';
 import useUIStateContext from 'src/hooks/useUiStateContext';
@@ -59,35 +60,53 @@ export default function ControlBar({
           ml="4"
           mt="4"
         >
-          {playing ? (
+          <Tooltip
+            label={playing ? 'Pause' : 'Start'}
+            hasArrow
+            placement="right"
+          >
+            {playing ? (
+              <IconButton
+                onClick={handlePlayStateChange(false)}
+                aria-label="pause"
+                icon={<PauseIcon />}
+              />
+            ) : (
+              <IconButton
+                onClick={handlePlayStateChange(true)}
+                aria-label="pause"
+                icon={<PlayIcon />}
+              />
+            )}
+          </Tooltip>
+          <Tooltip label="Forward" hasArrow placement="right">
             <IconButton
-              onClick={handlePlayStateChange(false)}
-              aria-label="pause"
-              icon={<PauseIcon />}
+              onClick={onForward}
+              aria-label="forward"
+              icon={<ForwardIcon />}
             />
-          ) : (
+          </Tooltip>
+          <Tooltip label="Back" hasArrow placement="right">
             <IconButton
-              onClick={handlePlayStateChange(true)}
-              aria-label="pause"
-              icon={<PlayIcon />}
+              onClick={onBack}
+              aria-label="back"
+              icon={<BackIcon />}
             />
-          )}
-          <IconButton
-            onClick={onForward}
-            aria-label="forward"
-            icon={<ForwardIcon />}
-          />
-          <IconButton onClick={onBack} aria-label="back" icon={<BackIcon />} />
-          <IconButton
-            onClick={onRewind}
-            aria-label="forward"
-            icon={<FirstIcon />}
-          />
-          <IconButton
-            onClick={handleBackToLoad}
-            aria-label="forward"
-            icon={<FolderIcon />}
-          />
+          </Tooltip>
+          <Tooltip label="Rewind" hasArrow placement="right">
+            <IconButton
+              onClick={onRewind}
+              aria-label="forward"
+              icon={<FirstIcon />}
+            />
+          </Tooltip>
+          <Tooltip label="Return to file selection" hasArrow placement="right">
+            <IconButton
+              onClick={handleBackToLoad}
+              aria-label="forward"
+              icon={<FolderIcon />}
+            />
+          </Tooltip>
         </Box>
       </Slide>
     </Dock>

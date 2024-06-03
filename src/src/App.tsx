@@ -11,7 +11,7 @@ function App() {
   const { view } = useUIStateContext();
 
   return (
-    <Box h="100vh" w="100vw" display="flex" overflow="hidden">
+    <Box h="100%" w="100%" display="flex" overflow="hidden">
       {view === Views.home ? <Home /> : <Show />}
       <Notice />
     </Box>

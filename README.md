@@ -12,7 +12,7 @@ Reviving the React-ImageView to experiment with packaging with the following goa
 Local development:
 
 ```bash
-cd perugia-view
+cd src
 npm i
 npm run dev
 ```
