@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useMemo, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import BrokenImageIcon from '@mui/icons-material/BrokenImage';
@@ -14,6 +14,8 @@ type Props = {
 
 export default function Slide({ file, focused }: Props) {
   const url = useRef<string | undefined>();
+  /** Handle re-render when a slide file updates */
+  const [ranKey, setRanKey] = useState(0);
 
   /** Lil trick to use an SVG as a background */
   const svgString = useMemo(
@@ -23,6 +25,7 @@ export default function Slide({ file, focused }: Props) {
 
   useEffect(() => {
     url.current = URL.createObjectURL(file.file);
+    setRanKey(Math.random());
   }, [file.originalIndex]);
 
   const clearObjectUrl = useCallback(() => {
@@ -41,6 +44,7 @@ export default function Slide({ file, focused }: Props) {
       transition={{ exit: { duration: 0.5 }, enter: { duration: 0.5 } }}
     >
       <Box
+        key={String(ranKey)}
         position={focused ? undefined : 'absolute'}
         opacity={focused ? 1 : 0}
         transitionProperty="opacity"
