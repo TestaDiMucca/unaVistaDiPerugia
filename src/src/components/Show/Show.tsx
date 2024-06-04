@@ -12,7 +12,9 @@ import eventBus, {
 } from 'src/utils/eventBus';
 import useToggleState from 'src/hooks/useToggleState';
 
+/** How many pictures ahead/behind should we load into memory */
 const CACHE_AMOUNT = 2;
+/** How long to wait before we hide the sidebar */
 const CONTROL_HIDE_DELAY = 3000;
 
 export default function Show() {
@@ -108,6 +110,7 @@ export default function Show() {
   useEventListener('keydown', handleKeyDown);
 
   const handleMouseMove = useCallback(
+    /** Fade out the bar after a moment of mouse inactivity */
     throttle(() => {
       if (fadeoutTimer.current) clearTimeout(fadeoutTimer.current);
 

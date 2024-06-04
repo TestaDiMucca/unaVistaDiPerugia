@@ -9,3 +9,5 @@ export enum Views {
 export const COLORS = {
   darkGray: '#161414',
 };
+
+export const DEFAULT_SLIDE_ADVANCE_TIME = 4000;

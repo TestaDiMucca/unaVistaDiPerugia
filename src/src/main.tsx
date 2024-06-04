@@ -7,6 +7,7 @@ import './index.css';
 import theme from './utils/theme.ts';
 import LibraryProvider from './providers/LibraryProvider.tsx';
 import UIStateProvider from './providers/UIStateProvider.tsx';
+import SettingsProvider from './providers/SettingsProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ColorModeProvider>
         <LibraryProvider>
           <UIStateProvider>
-            <App />
+            <SettingsProvider>
+              <App />
+            </SettingsProvider>
           </UIStateProvider>
         </LibraryProvider>
       </ColorModeProvider>

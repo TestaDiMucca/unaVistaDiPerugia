@@ -23,7 +23,7 @@ export default function Slide({ file, focused }: Props) {
 
   useEffect(() => {
     url.current = URL.createObjectURL(file.file);
-  }, []);
+  }, [file.originalIndex]);
 
   const clearObjectUrl = useCallback(() => {
     if (!url.current) return;

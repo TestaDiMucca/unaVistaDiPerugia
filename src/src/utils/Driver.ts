@@ -1,3 +1,4 @@
+import { DEFAULT_SLIDE_ADVANCE_TIME } from './constants';
 import eventBus, {
   DriverAction,
   DriverActionEnum,
@@ -11,7 +12,7 @@ import eventBus, {
  */
 class Driver {
   private timer: NodeJS.Timeout | null = null;
-  private advanceInterval = 4000;
+  private advanceInterval = DEFAULT_SLIDE_ADVANCE_TIME;
   running = false;
   private paused = false;
 
@@ -55,6 +56,10 @@ class Driver {
     this.refresh();
   };
 
+  public setAdvanceInterval = (timeInMs: number) => {
+    this.advanceInterval = timeInMs;
+  };
+
   private refresh = () => {
     if (!this.running) return;
 
@@ -64,7 +69,7 @@ class Driver {
 
   private addEventListeners() {
     eventBus.subscribe((e) => {
-      console.log(e);
+      console.log('Event received', e);
       switch (e.type) {
         case DriverEventEnum.playStateChange:
           if (e.state) this.start();
