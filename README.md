@@ -32,4 +32,6 @@ Will build with vite and with tauri:
 npm run test-build
 ```
 
+Tauri was integrated after the fact. For more information on the Rust components, see [the docs](https://tauri.app/v1/guides/getting-started/setup/integrate).
+
 </details>

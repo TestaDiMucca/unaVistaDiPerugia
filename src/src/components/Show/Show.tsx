@@ -11,11 +11,7 @@ import eventBus, {
   DriverEventEnum,
 } from 'src/utils/eventBus';
 import useToggleState from 'src/hooks/useToggleState';
-
-/** How many pictures ahead/behind should we load into memory */
-const CACHE_AMOUNT = 2;
-/** How long to wait before we hide the sidebar */
-const CONTROL_HIDE_DELAY = 3000;
+import { CACHE_AMOUNT, CONTROL_HIDE_DELAY } from 'src/utils/constants';
 
 export default function Show() {
   const [cursor, setCursor] = useState(0);

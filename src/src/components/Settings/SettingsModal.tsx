@@ -1,4 +1,4 @@
-import { Box, Input, Text, VStack } from '@chakra-ui/react';
+import { Input, Text, VStack } from '@chakra-ui/react';
 import BasicModal, { ModalProps } from '../common/Modal';
 import { ChangeEvent, useCallback } from 'react';
 import useSettingsContext from 'src/hooks/useSettingsContext';

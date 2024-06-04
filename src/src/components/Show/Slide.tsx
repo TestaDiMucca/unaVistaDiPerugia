@@ -1,6 +1,6 @@
-import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 
 import SVGSpinner from '../common/SVGSpinner';
