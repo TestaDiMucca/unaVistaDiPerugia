@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "perugia-view",
+    "productName": "Perugia View",
     "version": "0.1.0"
   },
   "tauri": {
@@ -38,7 +38,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["../src/assets/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {
