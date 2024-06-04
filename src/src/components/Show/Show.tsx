@@ -11,9 +11,7 @@ import eventBus, {
   DriverEventEnum,
 } from 'src/utils/eventBus';
 import useToggleState from 'src/hooks/useToggleState';
-
-const CACHE_AMOUNT = 2;
-const CONTROL_HIDE_DELAY = 3000;
+import { CACHE_AMOUNT, CONTROL_HIDE_DELAY } from 'src/utils/constants';
 
 export default function Show() {
   const [cursor, setCursor] = useState(0);
@@ -108,6 +106,7 @@ export default function Show() {
   useEventListener('keydown', handleKeyDown);
 
   const handleMouseMove = useCallback(
+    /** Fade out the bar after a moment of mouse inactivity */
     throttle(() => {
       if (fadeoutTimer.current) clearTimeout(fadeoutTimer.current);
 

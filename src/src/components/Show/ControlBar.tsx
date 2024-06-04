@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Box, IconButton, Slide } from '@chakra-ui/react';
 import PlayIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -5,12 +6,13 @@ import ForwardIcon from '@mui/icons-material/ArrowForward';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import FirstIcon from '@mui/icons-material/FirstPage';
 import FolderIcon from '@mui/icons-material/Folder';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import Dock from '../common/Dock';
 import Tooltip from '../common/Tooltip';
 import { COLORS, Views } from 'src/utils/constants';
-import { useCallback } from 'react';
 import useUIStateContext from 'src/hooks/useUiStateContext';
+import useSettingsContext from 'src/hooks/useSettingsContext';
 
 type Props = {
   isVisible: boolean;
@@ -30,6 +32,7 @@ export default function ControlBar({
   onTogglePlay,
 }: Props) {
   const { setView } = useUIStateContext();
+  const { setIsSettingsModalOpen } = useSettingsContext();
   const handlePlayStateChange = useCallback(
     (s: boolean) => () => {
       onTogglePlay(s);
@@ -44,6 +47,10 @@ export default function ControlBar({
   const onRewind = useCallback(() => {
     navigateTo(0);
   }, [navigateTo]);
+
+  const onOpenSettings = useCallback(() => {
+    setIsSettingsModalOpen(true);
+  }, []);
 
   return (
     <Dock>
@@ -74,7 +81,7 @@ export default function ControlBar({
             ) : (
               <IconButton
                 onClick={handlePlayStateChange(true)}
-                aria-label="pause"
+                aria-label="play"
                 icon={<PlayIcon />}
               />
             )}
@@ -103,8 +110,15 @@ export default function ControlBar({
           <Tooltip label="Return to file selection" hasArrow placement="right">
             <IconButton
               onClick={handleBackToLoad}
-              aria-label="forward"
+              aria-label="files"
               icon={<FolderIcon />}
+            />
+          </Tooltip>
+          <Tooltip label="Settings" hasArrow placement="right">
+            <IconButton
+              onClick={onOpenSettings}
+              aria-label="settings"
+              icon={<SettingsIcon />}
             />
           </Tooltip>
         </Box>

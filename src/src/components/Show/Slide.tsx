@@ -1,6 +1,6 @@
-import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import { useCallback, useEffect, useRef, useMemo } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { Box, Image, SlideFade, Text } from '@chakra-ui/react';
 import BrokenImageIcon from '@mui/icons-material/BrokenImage';
 
 import SVGSpinner from '../common/SVGSpinner';
@@ -23,7 +23,7 @@ export default function Slide({ file, focused }: Props) {
 
   useEffect(() => {
     url.current = URL.createObjectURL(file.file);
-  }, []);
+  }, [file.originalIndex]);
 
   const clearObjectUrl = useCallback(() => {
     if (!url.current) return;
