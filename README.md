@@ -32,6 +32,13 @@ Will build with vite and with tauri:
 npm run test-build
 ```
 
+## Stack
+
+Leverages some of these libraries:
+
+- [Chakra](https://v2.chakra-ui.com/docs/components)
+- [Tauri](https://tauri.app/v1/guides/)
+
 Tauri was integrated after the fact. For more information on the Rust components, see [the docs](https://tauri.app/v1/guides/getting-started/setup/integrate).
 
 </details>
