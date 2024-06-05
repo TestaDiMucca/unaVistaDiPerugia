@@ -3,7 +3,7 @@ import eventBus, {
   DriverAction,
   DriverActionEnum,
   DriverEventEnum,
-} from './eventBus';
+} from './events/driver';
 
 /**
  * Using event based system to decouple driving the slides

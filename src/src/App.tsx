@@ -7,13 +7,13 @@ import useUIStateContext from './hooks/useUiStateContext';
 import { Views } from './utils/constants';
 import Show from './components/Show/Show';
 import { useEffect } from 'react';
-import tauriPrint from './utils/tauriPrint';
+import { tauriPrintDebounced } from './utils/tauriAdapter';
 
 function App() {
   const { view } = useUIStateContext();
 
   useEffect(() => {
-    tauriPrint('React mounted.');
+    tauriPrintDebounced('React mounted.');
   }, []);
 
   return (

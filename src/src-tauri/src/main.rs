@@ -1,16 +1,28 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::{ Menu, MenuItem, Submenu };
+use tauri::{ Menu, MenuItem, Submenu, CustomMenuItem };
+
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+  message: String,
+}
 
 #[tauri::command]
 fn console_print(message: String) {
-	println!("Message received: {message}");
+	println!("[frontend] {message}");
 }
 
+/*
+  If we need to do cross platform some menu items will need to become condition.
+  Examples include: Zoom, Separator, as these won't exist in W.I.N.D.O.Z.E.
+
+	See example: https://doc.rust-lang.org/rust-by-example/attribute/cfg.html
+*/
 fn main() {
 	let file_menu = Submenu::new("File", Menu::new()
-		.add_native_item(MenuItem::CloseWindow)
+		.add_item(CustomMenuItem::new("open_settings".to_string(), "Settings").accelerator("CommandOrControl+."))
+		.add_native_item(MenuItem::Separator)
 		.add_native_item(MenuItem::Quit)
 	);
 
@@ -31,6 +43,14 @@ fn main() {
 
   tauri::Builder::default()
 		.menu(menu)
+		.on_menu_event(|event| {
+			match event.menu_item_id() {
+				"open_settings" => {
+					event.window().emit("menu_event", Payload { message: "settings".to_string() }).unwrap();
+				}
+				_ => {}
+			}
+		})
 		.invoke_handler(tauri::generate_handler!(console_print))
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

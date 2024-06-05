@@ -16,6 +16,9 @@
       "window": {
         "all": false,
         "setFullscreen": true
+      },
+      "globalShortcut": {
+        "all": true
       }
     },
     "bundle": {
@@ -64,10 +67,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 768,
         "resizable": true,
         "title": "Perugia View",
-        "width": 800
+        "width": 1024
       }
     ]
   }
