@@ -6,9 +6,15 @@ import Notice from './components/common/Notice';
 import useUIStateContext from './hooks/useUiStateContext';
 import { Views } from './utils/constants';
 import Show from './components/Show/Show';
+import { useEffect } from 'react';
+import tauriPrint from './utils/tauriPrint';
 
 function App() {
   const { view } = useUIStateContext();
+
+  useEffect(() => {
+    tauriPrint('React mounted.');
+  }, []);
 
   return (
     <Box h="100%" w="100%" display="flex" overflow="hidden">

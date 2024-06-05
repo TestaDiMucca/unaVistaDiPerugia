@@ -3,6 +3,11 @@
 
 use tauri::{ Menu, MenuItem, Submenu };
 
+#[tauri::command]
+fn console_print(message: String) {
+	println!("Message received: {message}");
+}
+
 fn main() {
 	let file_menu = Submenu::new("File", Menu::new()
 		.add_native_item(MenuItem::CloseWindow)
@@ -26,6 +31,7 @@ fn main() {
 
   tauri::Builder::default()
 		.menu(menu)
+		.invoke_handler(tauri::generate_handler!(console_print))
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

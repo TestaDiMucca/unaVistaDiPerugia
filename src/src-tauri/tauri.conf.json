@@ -12,7 +12,11 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "window": {
+        "all": false,
+        "setFullscreen": true
+      }
     },
     "bundle": {
       "active": true,
@@ -46,6 +50,10 @@
         "digestAlgorithm": "sha256",
         "timestampUrl": ""
       }
+    },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
     },
     "security": {
       "csp": null
