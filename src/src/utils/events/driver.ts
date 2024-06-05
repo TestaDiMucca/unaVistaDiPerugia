@@ -1,8 +1,8 @@
 import { Subject } from 'rxjs';
 
-const eventBus = new Subject<DriverEvent | DriverAction>();
+const driverEventBus = new Subject<DriverEvent | DriverAction>();
 
-export default eventBus;
+export default driverEventBus;
 
 /** Events the Driver should listen to */
 export enum DriverEventEnum {

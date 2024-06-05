@@ -2,6 +2,9 @@ import React, { createContext, useCallback, useEffect, useState } from 'react';
 import SettingsModal from 'src/components/Settings/SettingsModal';
 import Driver from 'src/utils/Driver';
 import { DEFAULT_SLIDE_ADVANCE_TIME } from 'src/utils/constants';
+import generalEventBus, {
+  TauriLinkEventMessage,
+} from 'src/utils/events/general';
 
 interface SettingsContextValues {
   advanceTime: number;
@@ -31,6 +34,20 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
     },
     []
   );
+
+  useEffect(() => {
+    const sub = generalEventBus.subscribe((e) => {
+      switch (e.message) {
+        case TauriLinkEventMessage.settings:
+          setIsSettingsModalOpen(true);
+          console.log('Openo');
+          break;
+        default:
+      }
+    });
+
+    return () => sub.unsubscribe();
+  }, []);
 
   useEffect(() => {
     Driver.setAdvanceInterval(advanceTime);

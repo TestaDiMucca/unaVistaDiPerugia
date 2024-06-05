@@ -9,7 +9,7 @@ import ControlBar from './ControlBar';
 import eventBus, {
   DriverActionEnum,
   DriverEventEnum,
-} from 'src/utils/eventBus';
+} from 'src/utils/events/driver';
 import useToggleState from 'src/hooks/useToggleState';
 import { CACHE_AMOUNT, CONTROL_HIDE_DELAY } from 'src/utils/constants';
 
