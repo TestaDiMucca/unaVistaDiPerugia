@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.15.2",
     "@mui/material": "^5.15.2",
     "@tauri-apps/api": "^1.5.6",
+    "@tauri-apps/plugin-store": "^2.0.0-beta.5",
     "framer-motion": "^10.16.16",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
