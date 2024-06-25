@@ -1,4 +1,6 @@
+import { message } from '@tauri-apps/api/dialog';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { TauriStore } from 'src/utils/TauriStore';
 
 interface LibraryContextValues {
   library: EnrichedFile[];
@@ -22,11 +24,21 @@ const LibraryProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
 
   const handleSetLibrary = useCallback((lib: EnrichedFile[]) => {
     setLibrary(lib);
+    TauriStore.set('id', 'test').then(() => {
+      void TauriStore.save();
+    });
   }, []);
 
   useEffect(() => {
     setRenderKey(Math.random());
   }, [library.length]);
+
+  useEffect(() => {
+    TauriStore.get('id').then((id) => {
+      console.log(id);
+      if (id) message(id);
+    });
+  }, []);
 
   return (
     <LibraryContext.Provider
