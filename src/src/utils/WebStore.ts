@@ -115,10 +115,4 @@ export let idbInstance: IndexedDb | null = null;
 export const initIdb = async () => {
   idbInstance = new IndexedDb('library');
   await idbInstance.createObjectStoreIfNotExist(['files']);
-
-  // const currentShit = await idbInstance.getAllValue('files');
-  // console.log(currentShit);
 };
-
-if (typeof window !== 'undefined')
-  (window as any).clearDb = () => idbInstance?.deleteAll('files');

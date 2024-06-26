@@ -9,6 +9,7 @@ import Show from './components/Show/Show';
 import { useEffect } from 'react';
 import { tauriPrintDebounced } from './utils/tauriAdapter';
 import { initIdb } from './utils/WebStore';
+import { initTestServices } from './utils/testService';
 
 function App() {
   const { view } = useUIStateContext();
@@ -17,6 +18,7 @@ function App() {
     /** App mount preparations */
     tauriPrintDebounced('React mounted.');
     void initIdb();
+    initTestServices();
   }, []);
 
   return (

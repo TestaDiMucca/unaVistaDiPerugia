@@ -13,13 +13,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <ColorModeProvider>
-        <LibraryProvider>
-          <UIStateProvider>
-            <SettingsProvider>
+        <SettingsProvider>
+          <LibraryProvider>
+            <UIStateProvider>
               <App />
-            </SettingsProvider>
-          </UIStateProvider>
-        </LibraryProvider>
+            </UIStateProvider>
+          </LibraryProvider>
+        </SettingsProvider>
       </ColorModeProvider>
     </ChakraProvider>
   </React.StrictMode>
