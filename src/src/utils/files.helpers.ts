@@ -57,24 +57,30 @@ export const deserializeStringToData = (
   return new File([blob], fileName, { type: fileType });
 };
 
+/**
+ * Clear any previous cached library and replace
+ */
 export const storeLibrary = async (files: EnrichedFile[]) => {
-  const converted = await mapSeries(files, async (file) => {
-    const serialized: StoredFile = {
-      serializedFile: await serializeDataToString(file.file),
-      originalIndex: file.originalIndex,
-      mediaType: file.mediaType,
-      fileName: file.file.name,
-      fileType: file.file.type,
-    };
+  await idbInstance?.deleteAll('files');
+  const converted = await mapSeries(
+    files.filter((f) => f.mediaType === 'image'),
+    async (file) => {
+      const serialized: StoredFile = {
+        serializedFile: await serializeDataToString(file.file),
+        originalIndex: file.originalIndex,
+        mediaType: file.mediaType,
+        fileName: file.file.name,
+        fileType: file.file.type,
+      };
 
-    return serialized;
-  });
+      return serialized;
+    }
+  );
 
   await idbInstance?.putBulkValue('files', converted);
-
-  console.log('File storage complete');
 };
 
+/** Deserialized cached libraries */
 export const readLibrary = async (): Promise<EnrichedFile[]> => {
   const stored = await idbInstance?.getAllValue('files');
 

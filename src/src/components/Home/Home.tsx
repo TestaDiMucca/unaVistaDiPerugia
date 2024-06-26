@@ -29,10 +29,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    console.log('init lib');
+    // Not ideal: hack to call after db is initialized
     setTimeout(() => {
       readLibrary().then((stored) => {
-        console.log('read storage', stored);
         if (stored && stored.length) {
           setLibrary(stored);
           setView(Views.show);

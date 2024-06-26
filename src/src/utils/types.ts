@@ -1,3 +1,4 @@
+/** Enriched format for displaying in library components */
 type EnrichedFile = {
   file: File;
   originalIndex: number;
@@ -5,6 +6,7 @@ type EnrichedFile = {
   focused?: boolean;
 };
 
+/** Serialized format for saving into iDB */
 type StoredFile = Omit<EnrichedFile, 'file'> & {
   serializedFile: string;
   fileName: string;
