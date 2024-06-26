@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Box, Image, Text, VStack, useToast } from '@chakra-ui/react';
 
 import Dropzone from '../common/Dropzone';
-import { filterAndEnrichFiles } from 'src/utils/files.helpers';
+import { filterAndEnrichFiles, readLibrary } from 'src/utils/files.helpers';
 import useLibraryContext from 'src/hooks/useLibraryContext';
 import useUIStateContext from 'src/hooks/useUiStateContext';
 import { Views } from 'src/utils/constants';
@@ -24,8 +24,20 @@ export default function Home() {
         isClosable: true,
       });
 
-    setLibrary(acceptedFiles);
+    setLibrary(acceptedFiles, false);
     setView(Views.show);
+  }, []);
+
+  useEffect(() => {
+    // Not ideal: hack to call after db is initialized
+    setTimeout(() => {
+      readLibrary().then((stored) => {
+        if (stored && stored.length) {
+          setLibrary(stored);
+          setView(Views.show);
+        }
+      });
+    }, 1000);
   }, []);
 
   return (

@@ -8,12 +8,15 @@ import { Views } from './utils/constants';
 import Show from './components/Show/Show';
 import { useEffect } from 'react';
 import { tauriPrintDebounced } from './utils/tauriAdapter';
+import { initIdb } from './utils/WebStore';
 
 function App() {
   const { view } = useUIStateContext();
 
   useEffect(() => {
+    /** App mount preparations */
     tauriPrintDebounced('React mounted.');
+    void initIdb();
   }, []);
 
   return (
