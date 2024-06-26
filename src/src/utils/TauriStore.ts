@@ -5,6 +5,10 @@ export type TauriStore = {
   id: string;
 };
 
+/**
+ * Note as of last attempt (Jun '24), object is null. Maybe improper setup or beta package.
+ * @link https://docs.rs/crate/tauri-plugin-store/latest#:~:text=As%20seen%20above%2C%20values%20added%20to%20the%20store,load%20them%20manually%20later%20like%20so%3A%20await%20store.load%28%29%3B
+ */
 const store = new Store('.settings.dat');
 
 const setStore = <T extends keyof TauriStore>(key: T, value: TauriStore[T]) =>

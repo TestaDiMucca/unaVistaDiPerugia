@@ -2,6 +2,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use tauri::{ Menu, MenuItem, Submenu, CustomMenuItem };
+use tauri::Wry;
+use tauri_plugin_store::with_store;
+
+let stores = app.state::<StoreCollection<Wry>>();
+let path = PathBuf::from("app_data.bin");
+
+with_store(app_handle, stores, path, |store| store.insert("a".to_string(), json!("b")))
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {

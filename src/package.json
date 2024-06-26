@@ -20,6 +20,7 @@
     "@tauri-apps/api": "^1.5.6",
     "@tauri-apps/plugin-store": "^2.0.0-beta.5",
     "framer-motion": "^10.16.16",
+    "idb": "^8.0.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
