@@ -12,6 +12,7 @@ import eventBus, {
 } from 'src/utils/events/driver';
 import useToggleState from 'src/hooks/useToggleState';
 import { CACHE_AMOUNT, CONTROL_HIDE_DELAY } from 'src/utils/constants';
+import InfoOverlay from './InfoOverlay';
 
 export default function Show() {
   const [cursor, setCursor] = useState(0);
@@ -120,6 +121,8 @@ export default function Show() {
     [fadeoutTimer.current]
   );
 
+  const focusedFile = focusedFiles[CACHE_AMOUNT];
+
   return (
     <Box
       w="full"
@@ -146,6 +149,7 @@ export default function Show() {
         onTogglePlay={handleTogglePlayState}
         playing={toggleStates.playing.isOn}
       />
+      <InfoOverlay focusedFile={focusedFile} />
     </Box>
   );
 }

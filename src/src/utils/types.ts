@@ -6,3 +6,11 @@ type EnrichedFile = {
 };
 
 type AnyFnc = (...args: any[]) => void;
+
+type Position =
+  | 'bottom-center'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'top-center'
+  | 'top-left'
+  | 'top-right';

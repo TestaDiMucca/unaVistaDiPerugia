@@ -27,3 +27,5 @@ export const CACHE_AMOUNT = 2;
 
 /** How long to wait before we hide the sidebar */
 export const CONTROL_HIDE_DELAY = 3000;
+
+export const DEFAULT_INFO_POS: Position = 'bottom-left';
