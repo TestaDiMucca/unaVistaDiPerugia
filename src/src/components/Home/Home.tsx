@@ -1,44 +1,37 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { Box, Image, Text, VStack, useToast } from '@chakra-ui/react';
 
 import Dropzone from '../common/Dropzone';
-import { filterAndEnrichFiles, readLibrary } from 'src/utils/files.helpers';
+import { filterAndEnrichFiles } from 'src/utils/files.helpers';
 import useLibraryContext from 'src/hooks/useLibraryContext';
 import useUIStateContext from 'src/hooks/useUiStateContext';
 import { Views } from 'src/utils/constants';
+import useSettingsContext from 'src/hooks/useSettingsContext';
 
 export default function Home() {
   const toast = useToast();
   const { setLibrary } = useLibraryContext();
   const { setView } = useUIStateContext();
+  const { generalSettings } = useSettingsContext();
 
-  const handleAddFiles = useCallback((files: File[]) => {
-    const acceptedFiles = filterAndEnrichFiles(files);
+  const handleAddFiles = useCallback(
+    (files: File[]) => {
+      const acceptedFiles = filterAndEnrichFiles(files);
 
-    if (acceptedFiles.length === 0)
-      return toast({
-        title: 'No files loaded',
-        description:
-          'Please check that you have selected supported file formats.',
-        status: 'error',
-        isClosable: true,
-      });
+      if (acceptedFiles.length === 0)
+        return toast({
+          title: 'No files loaded',
+          description:
+            'Please check that you have selected supported file formats.',
+          status: 'error',
+          isClosable: true,
+        });
 
-    setLibrary(acceptedFiles, false);
-    setView(Views.show);
-  }, []);
-
-  useEffect(() => {
-    // Not ideal: hack to call after db is initialized
-    setTimeout(() => {
-      readLibrary().then((stored) => {
-        if (stored && stored.length) {
-          setLibrary(stored);
-          setView(Views.show);
-        }
-      });
-    }, 1000);
-  }, []);
+      setLibrary(acceptedFiles, false);
+      setView(Views.show);
+    },
+    [generalSettings.libraryCaching]
+  );
 
   return (
     <Box

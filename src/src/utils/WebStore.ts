@@ -1,4 +1,5 @@
 import { IDBPDatabase, openDB } from 'idb';
+import generalEventBus, { GeneralEventMessage } from './events/general';
 
 /** Protect against invocations outside of browser context */
 const getWindow = () => (typeof window !== 'undefined' ? window : null);
@@ -80,7 +81,7 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
     for (const value of values) {
-      const result = await store.put(value);
+      await store.put(value);
       // console.log('Put Bulk Data ', JSON.stringify(result));
     }
     return this.getAllValue(tableName);
@@ -121,4 +122,5 @@ export let idbInstance: IndexedDb | null = null;
 export const initIdb = async () => {
   idbInstance = new IndexedDb('library');
   await idbInstance.createObjectStoreIfNotExist(['files']);
+  generalEventBus.next({ message: GeneralEventMessage.idbReady });
 };

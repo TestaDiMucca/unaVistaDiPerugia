@@ -6,9 +6,7 @@ import {
   DEFAULT_INFO_POS,
   DEFAULT_SLIDE_ADVANCE_TIME,
 } from 'src/utils/constants';
-import generalEventBus, {
-  TauriLinkEventMessage,
-} from 'src/utils/events/general';
+import generalEventBus, { GeneralEventMessage } from 'src/utils/events/general';
 
 /** If all these are disabled, turn overlay off */
 const OVERLAY_REQUIRED_SETTINGS: Array<keyof OverlaySettings> = [
@@ -114,7 +112,7 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   useEffect(() => {
     const sub = generalEventBus.subscribe((e) => {
       switch (e.message) {
-        case TauriLinkEventMessage.settings:
+        case GeneralEventMessage.settings:
           setIsSettingsModalOpen(true);
           break;
         default:

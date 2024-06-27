@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { window as apiWindow, event } from '@tauri-apps/api';
 import debounce from 'lodash/debounce';
-import generalEventBus, { TauriLinkEventMessage } from './events/general';
+import generalEventBus, { GeneralEventMessage } from './events/general';
 
 /** Sends a message to print into Tauri's console */
 export const tauriPrint = (message: string) =>
@@ -19,7 +19,7 @@ export const fullscreen = {
 };
 
 type Payload = {
-  message: TauriLinkEventMessage;
+  message: GeneralEventMessage;
 };
 
 /** Listen to custom events from the Rust wrapper layer */
