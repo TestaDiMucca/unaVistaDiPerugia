@@ -15,12 +15,18 @@ import { OverlaySettings } from 'src/providers/SettingsProvider';
 type Props = Omit<ModalProps, 'children' | 'title'>;
 
 export default function SettingsModal(props: Props) {
-  const { advanceTime, setAdvanceTime, overlaySettings, setOverlaySettings } =
-    useSettingsContext();
+  const {
+    generalSettings,
+    setGeneralSettings,
+    overlaySettings,
+    setOverlaySettings,
+  } = useSettingsContext();
 
   const handleTimingChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
-      setAdvanceTime(+e.target.value * 1000),
+      setGeneralSettings({
+        advanceTime: +e.target.value * 1000,
+      }),
     []
   );
 
@@ -39,7 +45,7 @@ export default function SettingsModal(props: Props) {
         <Text>Slide interval</Text>
         <InputGroup>
           <Input
-            value={Math.round(advanceTime / 1000)}
+            value={Math.round(generalSettings.advanceTime / 1000)}
             onChange={handleTimingChange}
             placeholder="Interval in seconds"
             type="number"

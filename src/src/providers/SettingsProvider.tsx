@@ -16,6 +16,11 @@ export type OverlaySettings = {
   position?: Position;
 };
 
+export type GeneralSettings = {
+  advanceTime: number;
+  libraryCaching?: boolean;
+};
+
 /** If all these are disabled, turn overlay off */
 const OVERLAY_REQUIRED_SETTINGS: Array<keyof OverlaySettings> = [
   'showFilename',
@@ -23,17 +28,15 @@ const OVERLAY_REQUIRED_SETTINGS: Array<keyof OverlaySettings> = [
 ];
 
 interface SettingsContextValues {
-  advanceTime: number;
-  setAdvanceTime: (state: number) => void;
   isSettingsModalOpen: boolean;
   setIsSettingsModalOpen: (isOpen: boolean) => void;
   overlaySettings: OverlaySettings;
   setOverlaySettings: (settings: Partial<OverlaySettings>) => void;
+  generalSettings: GeneralSettings;
+  setGeneralSettings: (settings: Partial<GeneralSettings>) => void;
 }
 
 export const SettingsContext = createContext<SettingsContextValues>({
-  advanceTime: DEFAULT_SLIDE_ADVANCE_TIME,
-  setAdvanceTime: (_) => {},
   isSettingsModalOpen: false,
   setIsSettingsModalOpen: (_) => {},
   overlaySettings: {
@@ -41,6 +44,10 @@ export const SettingsContext = createContext<SettingsContextValues>({
     showFilename: true,
   },
   setOverlaySettings: (_) => {},
+  generalSettings: {
+    advanceTime: DEFAULT_SLIDE_ADVANCE_TIME,
+  },
+  setGeneralSettings: (_) => {},
 });
 
 interface ProviderProps {}
@@ -48,17 +55,32 @@ interface ProviderProps {}
 const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   children,
 }) => {
-  const [advanceTime, setAdvanceTime] = useState(DEFAULT_SLIDE_ADVANCE_TIME);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [overlaySettings, setOverlaySettingsRaw] = useState<OverlaySettings>(
     {}
   );
+
+  const [generalSettings, setGeneralSettingsRaw] = useState<GeneralSettings>({
+    advanceTime: DEFAULT_SLIDE_ADVANCE_TIME,
+  });
 
   const handleOpenCloseSettingsModal = useCallback(
     (newState: boolean) => () => {
       setIsSettingsModalOpen(newState);
     },
     []
+  );
+
+  const setGeneralSettings = useCallback(
+    (newSettings: Partial<GeneralSettings>) => {
+      const settings = {
+        ...generalSettings,
+        ...newSettings,
+      };
+
+      setGeneralSettingsRaw(settings);
+    },
+    [generalSettings]
   );
 
   const setOverlaySettings = useCallback(
@@ -94,7 +116,6 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
       switch (e.message) {
         case TauriLinkEventMessage.settings:
           setIsSettingsModalOpen(true);
-          console.log('Openo');
           break;
         default:
       }
@@ -104,18 +125,18 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   }, []);
 
   useEffect(() => {
-    Driver.setAdvanceInterval(advanceTime);
-  }, [advanceTime]);
+    Driver.setAdvanceInterval(generalSettings.advanceTime);
+  }, [generalSettings.advanceTime]);
 
   return (
     <SettingsContext.Provider
       value={{
-        advanceTime,
-        setAdvanceTime,
         isSettingsModalOpen,
         setIsSettingsModalOpen,
         overlaySettings,
         setOverlaySettings,
+        generalSettings,
+        setGeneralSettings,
       }}
     >
       {children}

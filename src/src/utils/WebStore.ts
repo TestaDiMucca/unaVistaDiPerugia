@@ -112,6 +112,9 @@ type TableNames = 'files';
 
 export let idbInstance: IndexedDb | null = null;
 
+/**
+ * Must invoke this in order to prep indexed DB
+ */
 export const initIdb = async () => {
   idbInstance = new IndexedDb('library');
   await idbInstance.createObjectStoreIfNotExist(['files']);
