@@ -10,7 +10,6 @@ import BasicModal, { ModalProps } from '../common/Modal';
 import { ChangeEvent, useCallback } from 'react';
 import useSettingsContext from 'src/hooks/useSettingsContext';
 import SingleAccordion from '../common/SingleAccordion';
-import { OverlaySettings } from 'src/providers/SettingsProvider';
 
 type Props = Omit<ModalProps, 'children' | 'title'>;
 

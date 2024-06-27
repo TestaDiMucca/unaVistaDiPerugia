@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import SettingsModal from 'src/components/Settings/SettingsModal';
 import Driver from 'src/utils/Driver';
+import { LocalStorage } from 'src/utils/WebStore';
 import {
   DEFAULT_INFO_POS,
   DEFAULT_SLIDE_ADVANCE_TIME,
@@ -8,18 +9,6 @@ import {
 import generalEventBus, {
   TauriLinkEventMessage,
 } from 'src/utils/events/general';
-
-export type OverlaySettings = {
-  enabled?: boolean;
-  showFilename?: boolean;
-  showIndex?: boolean;
-  position?: Position;
-};
-
-export type GeneralSettings = {
-  advanceTime: number;
-  libraryCaching?: boolean;
-};
 
 /** If all these are disabled, turn overlay off */
 const OVERLAY_REQUIRED_SETTINGS: Array<keyof OverlaySettings> = [
@@ -55,6 +44,7 @@ interface ProviderProps {}
 const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   children,
 }) => {
+  const [loaded, setLoaded] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [overlaySettings, setOverlaySettingsRaw] = useState<OverlaySettings>(
     {}
@@ -63,6 +53,15 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   const [generalSettings, setGeneralSettingsRaw] = useState<GeneralSettings>({
     advanceTime: DEFAULT_SLIDE_ADVANCE_TIME,
   });
+
+  useEffect(() => {
+    if (!loaded) return;
+
+    LocalStorage.set('settings', {
+      generalSettings,
+      overlaySettings,
+    });
+  }, [generalSettings, overlaySettings, loaded]);
 
   const handleOpenCloseSettingsModal = useCallback(
     (newState: boolean) => () => {
@@ -111,6 +110,7 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
     [overlaySettings]
   );
 
+  /** Mount behaviors */
   useEffect(() => {
     const sub = generalEventBus.subscribe((e) => {
       switch (e.message) {
@@ -120,6 +120,21 @@ const SettingsProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
         default:
       }
     });
+
+    const persistedSettings = LocalStorage.get('settings');
+
+    if (persistedSettings) {
+      const parsedSettings = JSON.parse(
+        persistedSettings
+      ) as LocalStorageStore['settings'];
+
+      if (parsedSettings.generalSettings)
+        setGeneralSettings(parsedSettings.generalSettings);
+      if (parsedSettings.overlaySettings)
+        setOverlaySettings(parsedSettings.overlaySettings);
+    }
+
+    setLoaded(true);
 
     return () => sub.unsubscribe();
   }, []);
