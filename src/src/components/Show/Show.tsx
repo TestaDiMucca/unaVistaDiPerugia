@@ -138,6 +138,7 @@ export default function Show() {
             key={`slide-${file.originalIndex}`}
             file={file}
             focused={i === CACHE_AMOUNT}
+            playing={toggleStates.playing.isOn}
           />
         ) : null
       )}

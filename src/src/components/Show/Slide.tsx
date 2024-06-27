@@ -10,9 +10,10 @@ import Video from '../common/Video';
 type Props = {
   file: EnrichedFile;
   focused?: boolean;
+  playing?: boolean;
 };
 
-export default function Slide({ file, focused }: Props) {
+export default function Slide({ file, focused, playing }: Props) {
   const url = useRef<string | undefined>();
   /** Handle re-render when a slide file updates */
   const [ranKey, setRanKey] = useState(0);
@@ -59,7 +60,12 @@ export default function Slide({ file, focused }: Props) {
       >
         {url.current ? (
           file.mediaType === 'video' ? (
-            <Video src={url.current} autoPlay />
+            <Video
+              src={url.current}
+              autoPlay
+              playing={playing}
+              focused={focused}
+            />
           ) : (
             <Image
               w="100vw"
