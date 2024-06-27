@@ -1,14 +1,16 @@
 import { Subject } from 'rxjs';
 
-const generalEventBus = new Subject<TauriLinkEvent>();
+const generalEventBus = new Subject<GeneralEvent>();
 
 export default generalEventBus;
 
-export enum TauriLinkEventMessage {
+export enum GeneralEventMessage {
   /** A request to open the settings dialogue */
   settings = 'settings',
+  /** idb has been initialized */
+  idbReady = 'idbReady',
 }
 
-export type TauriLinkEvent = {
-  message: TauriLinkEventMessage;
+export type GeneralEvent = {
+  message: GeneralEventMessage;
 };

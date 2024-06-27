@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
+import useSettingsContext from 'src/hooks/useSettingsContext';
 import { storeLibrary } from 'src/utils/files.helpers';
 
 interface LibraryContextValues {
@@ -18,15 +19,17 @@ interface ProviderProps {}
 const LibraryProvider: React.FC<React.PropsWithChildren<ProviderProps>> = ({
   children,
 }) => {
+  const { generalSettings } = useSettingsContext();
   const [library, setLibrary] = useState<EnrichedFile[]>([]);
   const [renderKey, setRenderKey] = useState(0);
 
   const handleSetLibrary = useCallback(
     (lib: EnrichedFile[], puntStore = true) => {
       setLibrary(lib);
-      if (!puntStore) void storeLibrary(lib);
+      if (!puntStore && !!generalSettings.libraryCaching)
+        void storeLibrary(lib);
     },
-    []
+    [generalSettings.libraryCaching]
   );
 
   useEffect(() => {

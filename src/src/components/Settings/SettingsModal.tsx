@@ -10,19 +10,35 @@ import BasicModal, { ModalProps } from '../common/Modal';
 import { ChangeEvent, useCallback } from 'react';
 import useSettingsContext from 'src/hooks/useSettingsContext';
 import SingleAccordion from '../common/SingleAccordion';
-import { OverlaySettings } from 'src/providers/SettingsProvider';
+import { idbInstance } from 'src/utils/WebStore';
+import Tooltip from '../common/Tooltip';
 
 type Props = Omit<ModalProps, 'children' | 'title'>;
 
 export default function SettingsModal(props: Props) {
-  const { advanceTime, setAdvanceTime, overlaySettings, setOverlaySettings } =
-    useSettingsContext();
+  const {
+    generalSettings,
+    setGeneralSettings,
+    overlaySettings,
+    setOverlaySettings,
+  } = useSettingsContext();
 
   const handleTimingChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
-      setAdvanceTime(+e.target.value * 1000),
+      setGeneralSettings({
+        advanceTime: +e.target.value * 1000,
+      }),
     []
   );
+
+  const handleToggleCaching = useCallback(() => {
+    const newSetting = !generalSettings.libraryCaching;
+    setGeneralSettings({
+      libraryCaching: newSetting,
+    });
+
+    if (!newSetting) void idbInstance?.deleteAll('files');
+  }, [generalSettings.libraryCaching]);
 
   const handleToggleOverlaySetting = useCallback(
     (setting: keyof OverlaySettings) => () => {
@@ -39,7 +55,7 @@ export default function SettingsModal(props: Props) {
         <Text>Slide interval</Text>
         <InputGroup>
           <Input
-            value={Math.round(advanceTime / 1000)}
+            value={Math.round(generalSettings.advanceTime / 1000)}
             onChange={handleTimingChange}
             placeholder="Interval in seconds"
             type="number"
@@ -54,19 +70,33 @@ export default function SettingsModal(props: Props) {
           Enabled
         </Checkbox>
         <SingleAccordion title="Overlay settings">
-          <Checkbox
-            isChecked={overlaySettings.showFilename}
-            onChange={handleToggleOverlaySetting('showFilename')}
-          >
-            Show file name
-          </Checkbox>
-          <Checkbox
-            isChecked={overlaySettings.showIndex}
-            onChange={handleToggleOverlaySetting('showIndex')}
-          >
-            Show index
-          </Checkbox>
+          <VStack alignItems="flex-start">
+            <Checkbox
+              isChecked={overlaySettings.showFilename}
+              onChange={handleToggleOverlaySetting('showFilename')}
+            >
+              Show file name
+            </Checkbox>
+            <Checkbox
+              isChecked={overlaySettings.showIndex}
+              onChange={handleToggleOverlaySetting('showIndex')}
+            >
+              Show index
+            </Checkbox>
+          </VStack>
         </SingleAccordion>
+        <Text>Image caching</Text>
+        <Tooltip
+          label="Use with caution. Stores loaded files locally so they are present on next startup. Does not include videos."
+          placement="left"
+        >
+          <Checkbox
+            isChecked={!!generalSettings.libraryCaching}
+            onChange={handleToggleCaching}
+          >
+            Enabled
+          </Checkbox>
+        </Tooltip>
       </VStack>
     </BasicModal>
   );

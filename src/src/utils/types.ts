@@ -22,3 +22,22 @@ type Position =
   | 'top-center'
   | 'top-left'
   | 'top-right';
+
+type OverlaySettings = {
+  enabled?: boolean;
+  showFilename?: boolean;
+  showIndex?: boolean;
+  position?: Position;
+};
+
+type GeneralSettings = {
+  advanceTime: number;
+  libraryCaching?: boolean;
+};
+
+type LocalStorageStore = {
+  settings: {
+    generalSettings: GeneralSettings;
+    overlaySettings: OverlaySettings;
+  };
+};

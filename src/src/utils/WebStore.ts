@@ -1,13 +1,17 @@
 import { IDBPDatabase, openDB } from 'idb';
+import generalEventBus, { GeneralEventMessage } from './events/general';
 
 /** Protect against invocations outside of browser context */
 const getWindow = () => (typeof window !== 'undefined' ? window : null);
 
 export const LocalStorage = {
-  get: (key: string) => getWindow()?.localStorage.getItem(key),
-  set: (key: string, value: string) =>
-    getWindow()?.localStorage.setItem(key, value),
-  remove: (key: string) => getWindow()?.localStorage.removeItem(key),
+  get: (key: keyof LocalStorageStore) => getWindow()?.localStorage.getItem(key),
+  set: <T extends keyof LocalStorageStore>(
+    key: T,
+    value: LocalStorageStore[T]
+  ) => getWindow()?.localStorage.setItem(key as string, JSON.stringify(value)),
+  remove: (key: keyof LocalStorageStore) =>
+    getWindow()?.localStorage.removeItem(key),
 };
 
 /**
@@ -57,7 +61,7 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readonly');
     const store = tx.objectStore(tableName);
     const result = await store.getAll();
-    console.log('Get All Data', JSON.stringify(result));
+    // console.log('Get All Data', JSON.stringify(result));
     return result;
   }
 
@@ -67,7 +71,7 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
     const result = await store.put(value);
-    console.log('Put Data ', JSON.stringify(result));
+    // console.log('Put Data ', JSON.stringify(result));
     return result;
   }
 
@@ -77,8 +81,8 @@ class IndexedDb {
     const tx = this.db.transaction(tableName, 'readwrite');
     const store = tx.objectStore(tableName);
     for (const value of values) {
-      const result = await store.put(value);
-      console.log('Put Bulk Data ', JSON.stringify(result));
+      await store.put(value);
+      // console.log('Put Bulk Data ', JSON.stringify(result));
     }
     return this.getAllValue(tableName);
   }
@@ -90,11 +94,11 @@ class IndexedDb {
     const store = tx.objectStore(tableName);
     const result = await store.get(id);
     if (!result) {
-      console.log('Id not found', id);
+      // console.log('Id not found', id);
       return result;
     }
     await store.delete(id);
-    console.log('Deleted Data', id);
+    // console.log('Deleted Data', id);
     return id;
   }
 
@@ -112,7 +116,11 @@ type TableNames = 'files';
 
 export let idbInstance: IndexedDb | null = null;
 
+/**
+ * Must invoke this in order to prep indexed DB
+ */
 export const initIdb = async () => {
   idbInstance = new IndexedDb('library');
   await idbInstance.createObjectStoreIfNotExist(['files']);
+  generalEventBus.next({ message: GeneralEventMessage.idbReady });
 };
