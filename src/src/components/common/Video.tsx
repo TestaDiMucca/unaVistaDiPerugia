@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Box, BoxProps } from '@chakra-ui/react';
+import driverEventBus, { DriverEventEnum } from 'src/utils/events/driver';
 
 type Props = Omit<BoxProps, 'children'> & {
   src: any;
@@ -33,16 +34,36 @@ export default function Video({
 
     if (focused && !prevFocused.current && playing) {
       rewindAndPlay();
-      // signal a pause
+      driverEventBus.next({
+        type: DriverEventEnum.blockingStateChange,
+        state: true,
+      });
     }
 
+    /** Always unlock, in case a user paused. */
     if (!focused && prevFocused.current) {
-      // moving off frame
-      // signal an unpause
+      driverEventBus.next({
+        type: DriverEventEnum.blockingStateChange,
+        state: false,
+        ...(playing ? { advance: true } : {}),
+      });
     }
 
+    prevFocused.current = focused ?? false;
     // start video, listen to finish to pause unpause
   }, [playing, focused, prevFocused.current, rewindAndPlay]);
+
+  const onStartedPlaying = useCallback(() => {}, [playing]);
+
+  const onDonePlaying = useCallback(() => {
+    if (!playing) return;
+
+    driverEventBus.next({
+      type: DriverEventEnum.blockingStateChange,
+      state: false,
+      advance: true,
+    });
+  }, [playing]);
 
   return (
     <Box
@@ -52,8 +73,8 @@ export default function Video({
       as="video"
       controls
       objectFit="contain"
-      onEnded={() => {}}
-      onPlay={() => {}}
+      onEnded={onDonePlaying}
+      onPlay={onStartedPlaying}
       {...props}
     />
   );
