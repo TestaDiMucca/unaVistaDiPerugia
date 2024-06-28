@@ -50,8 +50,6 @@ class Driver {
   };
 
   public unpause = () => {
-    if (this.paused) return;
-
     this.paused = false;
     this.refresh();
   };
@@ -76,10 +74,12 @@ class Driver {
           else this.stop();
           break;
         case DriverEventEnum.blockingStateChange:
-          if (e.state) {
+          if (e.state === false) {
             this.unpause();
             if (e.advance) this.advance();
-          } else this.pause();
+          } else {
+            this.pause();
+          }
           break;
         case DriverEventEnum.manualAction:
           this.refresh();
