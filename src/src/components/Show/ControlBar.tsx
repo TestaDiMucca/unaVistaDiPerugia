@@ -7,6 +7,8 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import FirstIcon from '@mui/icons-material/FirstPage';
 import FolderIcon from '@mui/icons-material/Folder';
 import SettingsIcon from '@mui/icons-material/Settings';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 import Dock from '../common/Dock';
 import Tooltip from '../common/Tooltip';
@@ -31,7 +33,7 @@ export default function ControlBar({
   navigateTo,
   onTogglePlay,
 }: Props) {
-  const { setView } = useUIStateContext();
+  const { setView, isFullscreen, toggleFullscreen } = useUIStateContext();
   const { setIsSettingsModalOpen } = useSettingsContext();
   const handlePlayStateChange = useCallback(
     (s: boolean) => () => {
@@ -105,6 +107,13 @@ export default function ControlBar({
               onClick={onRewind}
               aria-label="forward"
               icon={<FirstIcon />}
+            />
+          </Tooltip>
+          <Tooltip label="Toggle fullscreen" hasArrow placement="right">
+            <IconButton
+              onClick={toggleFullscreen}
+              aria-label="files"
+              icon={isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
             />
           </Tooltip>
           <Tooltip label="Return to file selection" hasArrow placement="right">
