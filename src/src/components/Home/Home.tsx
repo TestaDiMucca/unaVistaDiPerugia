@@ -55,8 +55,7 @@ export default function Home() {
       <VStack
         padding="10"
         borderRadius="4"
-        border="1px solid"
-        borderColor="orange.500"
+        boxShadow="5px 5px 14px 0px rgba(0, 0, 0, 0.4)"
         w="sm"
         h="md"
         zIndex={2}
