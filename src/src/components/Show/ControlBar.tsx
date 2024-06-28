@@ -76,12 +76,14 @@ export default function ControlBar({
           >
             {playing ? (
               <IconButton
+                variant="hollow"
                 onClick={handlePlayStateChange(false)}
                 aria-label="pause"
                 icon={<PauseIcon />}
               />
             ) : (
               <IconButton
+                variant="hollow"
                 onClick={handlePlayStateChange(true)}
                 aria-label="play"
                 icon={<PlayIcon />}
@@ -91,12 +93,14 @@ export default function ControlBar({
           <Tooltip label="Forward" hasArrow placement="right">
             <IconButton
               onClick={onForward}
+              variant="hollow"
               aria-label="forward"
               icon={<ForwardIcon />}
             />
           </Tooltip>
           <Tooltip label="Back" hasArrow placement="right">
             <IconButton
+              variant="hollow"
               onClick={onBack}
               aria-label="back"
               icon={<BackIcon />}
@@ -104,6 +108,7 @@ export default function ControlBar({
           </Tooltip>
           <Tooltip label="Rewind" hasArrow placement="right">
             <IconButton
+              variant="hollow"
               onClick={onRewind}
               aria-label="forward"
               icon={<FirstIcon />}
@@ -111,6 +116,7 @@ export default function ControlBar({
           </Tooltip>
           <Tooltip label="Toggle fullscreen" hasArrow placement="right">
             <IconButton
+              variant="hollow"
               onClick={toggleFullscreen}
               aria-label="files"
               icon={isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
@@ -118,6 +124,7 @@ export default function ControlBar({
           </Tooltip>
           <Tooltip label="Return to file selection" hasArrow placement="right">
             <IconButton
+              variant="hollow"
               onClick={handleBackToLoad}
               aria-label="files"
               icon={<FolderIcon />}
@@ -125,6 +132,7 @@ export default function ControlBar({
           </Tooltip>
           <Tooltip label="Settings" hasArrow placement="right">
             <IconButton
+              variant="hollow"
               onClick={onOpenSettings}
               aria-label="settings"
               icon={<SettingsIcon />}

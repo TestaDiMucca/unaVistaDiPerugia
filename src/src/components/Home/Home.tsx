@@ -8,6 +8,8 @@ import useUIStateContext from 'src/hooks/useUiStateContext';
 import { Views } from 'src/utils/constants';
 import useSettingsContext from 'src/hooks/useSettingsContext';
 
+const DALLE_CAT = 'src/assets/Dalle_Cat.png';
+
 export default function Home() {
   const toast = useToast();
   const { setLibrary } = useLibraryContext();
@@ -41,6 +43,15 @@ export default function Home() {
       alignItems="center"
       justifyContent="center"
     >
+      <Image
+        src={DALLE_CAT}
+        position="fixed"
+        objectFit="cover"
+        w="full"
+        h="full"
+        opacity={0.3}
+        filter="blur(10px)"
+      />
       <VStack
         padding="10"
         borderRadius="4"
@@ -48,16 +59,17 @@ export default function Home() {
         borderColor="orange.500"
         w="sm"
         h="md"
+        zIndex={2}
       >
         <Box overflow="hidden" w="xs" borderRadius="full">
-          <Image src="src/assets/DallE_Cat.png" />
+          <Image src={DALLE_CAT} />
         </Box>
         <Text color="#EFDADA" mt="4" opacity="0.5">
           Drop files in, or click here to select
         </Text>
       </VStack>
 
-      <Dropzone onDrop={handleAddFiles} />
+      <Dropzone zIndex={3} onDrop={handleAddFiles} />
     </Box>
   );
 }
